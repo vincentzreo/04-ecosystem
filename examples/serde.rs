@@ -12,6 +12,13 @@ struct User {
     skills: Vec<String>,
 }
 
+#[derive(Debug, Serialize, Deserialize)]
+enum MyState {
+    Init(String),
+    Running(Vec<String>),
+    Done(u32),
+}
+
 fn main() -> anyhow::Result<()> {
     let user = UserBuilder::default()
         .name("Alice")
@@ -27,5 +34,9 @@ fn main() -> anyhow::Result<()> {
     println!("{:?}", user1);
 
     assert_eq!(user, user1);
+
+    let state = MyState::Running(vec!["Rust".to_string(), "Python".to_string()]);
+    let json = serde_json::to_string(&state)?;
+    println!("{}", json);
     Ok(())
 }
